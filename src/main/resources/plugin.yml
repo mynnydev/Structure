@@ -1,0 +1,14 @@
+name: Structure
+version: '1.0.0-1.21.8'
+main: dev.klayses.structure.Main
+api-version: '1.21'
+load: STARTUP
+authors: [ Mynny ]
+description: A structure plugin
+website: discord.klayses.dev
+
+commands:
+  get:
+    description: Spawns a loaded structure.
+  getlist:
+    description: Lists all loaded structures.
