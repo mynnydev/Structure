@@ -14,7 +14,7 @@ With just a few commands, structures can be placed exactly where you want them �
 
 ## 💡 Features
 
-- Spawn structures using a simple command  
+- Spawn or Save structures using a simple command  
 - Supports **rotation** and **mirror**  
 - Exact positioning with **coordinates** and world selection  
 - View all available structures via `/getlist`  
@@ -37,11 +37,14 @@ To load structures with this plugin, place them in the plugin folder:
 - `/getlist`  
   Lists all available structures.
 
+- `/cas`  
+  Saving structures.
+
 ---
 
 ## 🔐 Permissions
 
-- `structure.use` – Required to use `/get` and `/getlist`
+- `structure.use` – Required to use `/get` , `/getlist` and `/cas`
 
 ---
 
