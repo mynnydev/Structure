@@ -38,54 +38,57 @@ public class CasCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "Usage: /cas <name> <world> <pos1-x> <pos1-y> <pos1-z> <pos2-x> <pos2-y> <pos2-z>");
             return true;
         }
+        if(sender.hasPermission(Main.perm)) {
+            String name = args[0];
+            String worldName = args[1];
+            World world = Bukkit.getWorld(worldName);
 
-        String name = args[0];
-        String worldName = args[1];
-        World world = Bukkit.getWorld(worldName);
-
-        if (world == null) {
-            sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "World not found: " + ChatColor.of("#ff4400") + worldName);
-            return true;
-        }
-
-        try {
-            int pos1x = Integer.parseInt(args[2]);
-            int pos1y = Integer.parseInt(args[3]);
-            int pos1z = Integer.parseInt(args[4]);
-            int pos2x = Integer.parseInt(args[5]);
-            int pos2y = Integer.parseInt(args[6]);
-            int pos2z = Integer.parseInt(args[7]);
-
-            StructureManager structureManager = Bukkit.getStructureManager();
-            Structure structure = structureManager.createStructure();
-
-            Location corner1 = new Location(world, pos1x, pos1y, pos1z);
-            Location corner2 = new Location(world, pos2x, pos2y, pos2z);
-            structure.fill(corner1, corner2, true);
-
-            NamespacedKey key = new NamespacedKey(plugin, name);
-            structureManager.saveStructure(key, structure);
-
-            File sourceFile = new File(plugin.getDataFolder().getParentFile().getParentFile(),
-                    "world/generated/structure/structures" + "/" + name + ".nbt");
-            File targetDir = new File(plugin.getDataFolder(), "structures");
-            if (!targetDir.exists()) {
-                targetDir.mkdirs();
-            }
-            File targetFile = new File(targetDir, name + ".nbt");
-            if (sourceFile.exists()) {
-                Files.move(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "Structure " + ChatColor.of("#00fc88") +  name + ChatColor.WHITE + " saved and placed in the structures folder.");
-                this.plugin.getLogger().log(Level.INFO, "Structure " + name + " saved and placed in " + targetFile.getPath() + " folder.");
-            } else {
-                sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "An error has occurred. For more information, check the console.");
-                this.plugin.getLogger().log(Level.SEVERE, "Could not find the file: ", sourceFile.getPath());
+            if (world == null) {
+                sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "World not found: " + ChatColor.of("#ff4400") + worldName);
+                return true;
             }
 
-        } catch (NumberFormatException e) {
-            sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "Coordinates must be numbers!");
-        } catch (Exception e) {
-            this.plugin.getLogger().log(Level.SEVERE, "Error saving the structure: ", e);
+            try {
+                int pos1x = Integer.parseInt(args[2]);
+                int pos1y = Integer.parseInt(args[3]);
+                int pos1z = Integer.parseInt(args[4]);
+                int pos2x = Integer.parseInt(args[5]);
+                int pos2y = Integer.parseInt(args[6]);
+                int pos2z = Integer.parseInt(args[7]);
+
+                StructureManager structureManager = Bukkit.getStructureManager();
+                Structure structure = structureManager.createStructure();
+
+                Location corner1 = new Location(world, pos1x, pos1y, pos1z);
+                Location corner2 = new Location(world, pos2x, pos2y, pos2z);
+                structure.fill(corner1, corner2, true);
+
+                NamespacedKey key = new NamespacedKey(plugin, name);
+                structureManager.saveStructure(key, structure);
+
+                File sourceFile = new File(plugin.getDataFolder().getParentFile().getParentFile(),
+                        "world/generated/structure/structures" + "/" + name + ".nbt");
+                File targetDir = new File(plugin.getDataFolder(), "structures");
+                if (!targetDir.exists()) {
+                    targetDir.mkdirs();
+                }
+                File targetFile = new File(targetDir, name + ".nbt");
+                if (sourceFile.exists()) {
+                    Files.move(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "Structure " + ChatColor.of("#00fc88") +  name + ChatColor.WHITE + " saved and placed in the structures folder.");
+                    this.plugin.getLogger().log(Level.INFO, "Structure " + name + " saved and placed in " + targetFile.getPath() + " folder.");
+                } else {
+                    sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "An error has occurred. For more information, check the console.");
+                    this.plugin.getLogger().log(Level.SEVERE, "Could not find the file: ", sourceFile.getPath());
+                }
+
+            } catch (NumberFormatException e) {
+                sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "Coordinates must be numbers!");
+            } catch (Exception e) {
+                this.plugin.getLogger().log(Level.SEVERE, "Error saving the structure: ", e);
+            }
+        } else {
+            sender.sendMessage(Main.NO_PERMISSION);
         }
         return true;
     }
