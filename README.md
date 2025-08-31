@@ -37,7 +37,7 @@ To load structures with this plugin, place them in the plugin folder:
 - `/getlist`  
   Lists all available structures.
 
-- `/cas`  
+- `/cas <name> <world> <pos1-x> <pos1-y> <pos1-z> <pos2-x> <pos2-y> <pos2-z>`  
   Saving structures.
 
 ---
