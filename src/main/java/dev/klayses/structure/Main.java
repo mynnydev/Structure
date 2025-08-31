@@ -1,5 +1,6 @@
 package dev.klayses.structure;
 
+import dev.klayses.structure.function.CasCommand;
 import dev.klayses.structure.function.GetCommand;
 import dev.klayses.structure.function.GetlistCommand;
 import net.kyori.adventure.text.Component;
@@ -13,6 +14,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
@@ -26,6 +28,8 @@ public final class Main extends JavaPlugin {
         GetCommand getCommand = new GetCommand(this);
         this.getCommand("get").setExecutor(new GetCommand(this));
         this.getCommand("getlist").setExecutor(new GetlistCommand(this, getCommand.getLoadedStructures()));
+        this.getCommand("cas").setExecutor(new CasCommand(this));
+
         File structureFolder = new File(this.getDataFolder(), "structures");
         if (!structureFolder.exists()) {
             structureFolder.mkdirs();
@@ -34,6 +38,7 @@ public final class Main extends JavaPlugin {
     }
 
     public void onDisable() {
+        getLogger().log(Level.INFO, "Starting shutdown process...");
     }
 
     public void onLoad() {

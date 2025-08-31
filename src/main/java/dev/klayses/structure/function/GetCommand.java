@@ -68,8 +68,7 @@ public class GetCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender.hasPermission(Main.perm)) {
             if (args.length != 7) {
-                String var25 = Main.MAIN_PREIFX;
-                sender.sendMessage(var25 + String.valueOf(ChatColor.WHITE) + "Usage: /get <structure> <rotation> <mirror> <world> <x> <y> <z>");
+                sender.sendMessage(Main.MAIN_PREIFX + String.valueOf(ChatColor.WHITE) + "Usage: /get <structure> <rotation> <mirror> <world> <x> <y> <z>");
                 return true;
             } else {
                 String structureName = args[0].toLowerCase();
@@ -81,8 +80,7 @@ public class GetCommand implements CommandExecutor, TabCompleter {
                 try {
                     rotation = StructureRotation.valueOf(rotationName);
                 } catch (IllegalArgumentException var20) {
-                    String var10001 = Main.MAIN_PREIFX;
-                    sender.sendMessage(var10001 + String.valueOf(ChatColor.WHITE) + "Invalid rotation! Use: NONE, CLOCKWISE_90, CLOCKWISE_180, COUNTERCLOCKWISE_90");
+                    sender.sendMessage(Main.MAIN_PREIFX + String.valueOf(ChatColor.WHITE) + "Invalid rotation! Use: NONE, CLOCKWISE_90, CLOCKWISE_180, COUNTERCLOCKWISE_90");
                     return true;
                 }
 
@@ -90,8 +88,7 @@ public class GetCommand implements CommandExecutor, TabCompleter {
                 try {
                     mirror = Mirror.valueOf(mirrorName);
                 } catch (IllegalArgumentException var19) {
-                    String var21 = Main.MAIN_PREIFX;
-                    sender.sendMessage(var21 + String.valueOf(ChatColor.WHITE) + "Invalid mirror! Use: NONE, LEFT_RIGHT, FRONT_BACK");
+                    sender.sendMessage(Main.MAIN_PREIFX + String.valueOf(ChatColor.WHITE) + "Invalid mirror! Use: NONE, LEFT_RIGHT, FRONT_BACK");
                     return true;
                 }
 
@@ -103,25 +100,31 @@ public class GetCommand implements CommandExecutor, TabCompleter {
                     y = Integer.parseInt(args[5]);
                     z = Integer.parseInt(args[6]);
                 } catch (NumberFormatException var18) {
-                    String var22 = Main.MAIN_PREIFX;
-                    sender.sendMessage(var22 + String.valueOf(ChatColor.WHITE) + "Coordinates must be numbers!");
+                    sender.sendMessage(Main.MAIN_PREIFX + String.valueOf(ChatColor.WHITE) + "Coordinates must be numbers!");
                     return true;
                 }
 
                 Structure structure = (Structure)this.loadedStructures.get(structureName);
                 if (structure == null) {
-                    String var24 = Main.MAIN_PREIFX;
-                    sender.sendMessage(var24 + String.valueOf(ChatColor.WHITE) + "Structure not found: " + String.valueOf(ChatColor.of("#ff4400")) + structureName);
+                    sender.sendMessage(Main.MAIN_PREIFX + String.valueOf(ChatColor.WHITE) + "Structure not found: " + String.valueOf(ChatColor.of("#ff4400")) + structureName);
                     return true;
                 } else if (Bukkit.getWorld(worldName) == null) {
-                    String var23 = Main.MAIN_PREIFX;
-                    sender.sendMessage(var23 + String.valueOf(ChatColor.WHITE) + "World not found: " + String.valueOf(ChatColor.of("#ff4400")) + worldName);
+                    sender.sendMessage(Main.MAIN_PREIFX + String.valueOf(ChatColor.WHITE) + "World not found: " + String.valueOf(ChatColor.of("#ff4400")) + worldName);
                     return true;
                 } else {
                     Location loc = new Location(Bukkit.getWorld(worldName), (double)x, (double)y, (double)z);
                     structure.place(loc, true, rotation, mirror, -1, 1.0F, new Random());
-                    Component structureComponent = Component.text("").append(Component.text("settings", NamedTextColor.YELLOW).hoverEvent(HoverEvent.showText(((TextComponent)((TextComponent)Component.text("rotation: ").append(Component.text(rotation.name(), TextColor.fromHexString("#00fc88")))).append(Component.text(", mirror: ", NamedTextColor.WHITE))).append(Component.text(mirror.name(), TextColor.fromHexString("#fdeca6"))))));
-                    Component message = ((TextComponent.Builder)((TextComponent.Builder)((TextComponent.Builder)((TextComponent.Builder)((TextComponent.Builder)((TextComponent.Builder)Component.text().append(Main.MAIN_PREFIX_CO)).append(Component.text("Structure ", NamedTextColor.WHITE))).append(Component.text(structureName, TextColor.fromHexString("#00fc88")))).append(Component.text(" has been spawned with these ", NamedTextColor.WHITE))).append(structureComponent)).append(Component.text("!", NamedTextColor.WHITE))).build();
+                    Component structureComponent = Component.text("").append(Component.text("settings",
+                            NamedTextColor.YELLOW).hoverEvent(HoverEvent.showText(((TextComponent)((TextComponent)
+                            Component.text("rotation: ").append(Component.text(rotation.name(),
+                                    TextColor.fromHexString("#00fc88")))).append(Component.text(", mirror: ",
+                            NamedTextColor.WHITE))).append(Component.text(mirror.name(), TextColor.fromHexString("#fdeca6"))))));
+                    Component message = ((TextComponent.Builder)((TextComponent.Builder)
+                            ((TextComponent.Builder)((TextComponent.Builder)((TextComponent.Builder)
+                                    ((TextComponent.Builder)Component.text().append(Main.MAIN_PREFIX_CO)).append(Component.text
+                                            ("Structure ", NamedTextColor.WHITE))).append(Component.text(structureName,
+                                    TextColor.fromHexString("#00fc88")))).append(Component.text(" has been spawned with these ",
+                                    NamedTextColor.WHITE))).append(structureComponent)).append(Component.text("!", NamedTextColor.WHITE))).build();
                     sender.sendMessage(message);
                     this.plugin.getLogger().log(Level.INFO, "Spawning structure " + structureName + ", " + worldName + ", " + x + ", " + y + ", " + z + ", rotation:" + String.valueOf(rotation) + ", mirror:" + String.valueOf(mirror));
                     return true;

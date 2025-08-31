@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.Structure;
 
+import java.util.List;
 import java.util.Map;
 
 public class GetlistCommand implements CommandExecutor {
@@ -30,21 +31,33 @@ public class GetlistCommand implements CommandExecutor {
             sender.sendMessage(Main.NO_PERMISSION);
             return true;
         } else if (this.loadedStructures.isEmpty()) {
-            String var10 = Main.MAIN_PREIFX;
-            sender.sendMessage(var10 + String.valueOf(ChatColor.WHITE) + "No structures loaded!");
+            sender.sendMessage(Main.MAIN_PREIFX + String.valueOf(ChatColor.WHITE) + "No structures loaded!");
             return true;
         } else {
-            String var10001 = Main.MAIN_PREIFX;
-            sender.sendMessage(var10001 + String.valueOf(ChatColor.WHITE) + "Loaded Structures:");
+            sender.sendMessage(Main.MAIN_PREIFX + String.valueOf(ChatColor.WHITE) + "Loaded Structures:");
 
             for(String name : this.loadedStructures.keySet()) {
                 if (sender instanceof Player) {
                     Player player = (Player)sender;
-                    Component structureComponent = Component.text("- ", NamedTextColor.WHITE).append(((TextComponent)Component.text(name, NamedTextColor.YELLOW).hoverEvent(HoverEvent.showText(Component.text("Click to spawn this structure!")))).clickEvent(ClickEvent.suggestCommand("/get " + name + " NONE NONE " + player.getWorld().getName() + " " + player.getLocation().getBlockX() + " " + player.getLocation().getBlockY() + " " + player.getLocation().getBlockZ())));
+
+                    Structure structure = loadedStructures.get(name);
+                    var size = structure.getSize();
+                    String sizeString = (int)size.getX() + "L " + (int)size.getY() + "H " + (int)size.getZ() + "W";
+
+                    int entityCount = structure.getEntities().size();
+                    int paletteCount = structure.getPaletteCount();
+
+                    Component structureComponent = Component.text("- ",
+                            NamedTextColor.WHITE).append(((TextComponent)Component.text(name, NamedTextColor.YELLOW).
+                            hoverEvent(HoverEvent.showText(Component.text("size: " + ChatColor.YELLOW + sizeString + "\n" +
+                                    ChatColor.WHITE + "entities: " + ChatColor.DARK_AQUA + entityCount + "\n" + ChatColor.WHITE +
+                                    "palette: " + ChatColor.BLUE + paletteCount + "\n" + ChatColor.WHITE + "\n" + "Click to spawn this structure!")))).
+                            clickEvent(ClickEvent.suggestCommand("/get " + name + " NONE NONE " + player.getWorld().getName() + " " +
+                                    player.getLocation().getBlockX() + " " + player.getLocation().getBlockY() + " " + player.getLocation().getBlockZ())));
+
                     sender.sendMessage(structureComponent);
                 } else {
-                    var10001 = String.valueOf(ChatColor.WHITE);
-                    sender.sendMessage(var10001 + "- " + String.valueOf(ChatColor.YELLOW) + name);
+                    sender.sendMessage(Main.MAIN_PREIFX + ChatColor.WHITE + "- " + String.valueOf(ChatColor.YELLOW) + name);
                 }
             }
 

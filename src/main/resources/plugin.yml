@@ -1,5 +1,5 @@
 name: Structure
-version: '1.0.0-1.21.8'
+version: '1.0.1-1.21.8'
 main: dev.klayses.structure.Main
 api-version: '1.21'
 load: STARTUP
@@ -12,3 +12,5 @@ commands:
     description: Spawns a loaded structure.
   getlist:
     description: Lists all loaded structures.
+  cas:
+    description: Saving structures.

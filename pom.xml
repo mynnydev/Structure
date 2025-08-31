@@ -6,7 +6,7 @@
 
     <groupId>dev.klayses</groupId>
     <artifactId>Structure</artifactId>
-    <version>1.0.0-1.21.8</version>
+    <version>1.0.1-1.21.8</version>
     <packaging>jar</packaging>
 
     <name>Structure</name>
